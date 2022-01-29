@@ -25,7 +25,12 @@ namespace CleanCodeLearning
         {
             throws[currentThrow++] = pins;
             score += pins;
+            AdjustCurrentFrame();
 
+        }
+        
+        private void AdjustCurrentFrame()
+        {
             if (isFirstThrow)
             {
                 isFirstThrow = false;
@@ -35,7 +40,6 @@ namespace CleanCodeLearning
             {
                 isFirstThrow = true;
             }
-
         }
         
         public int CurrentFrame
