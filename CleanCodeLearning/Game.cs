@@ -13,6 +13,8 @@ namespace CleanCodeLearning
         private int score;
         private int[] throws = new int[21];
         private int currentThrow;
+        private int currentFrame;
+        private bool isFirstThrow = true;
 
         public int Score
         {
@@ -24,6 +26,21 @@ namespace CleanCodeLearning
             throws[currentThrow++] = pins;
             score += pins;
 
+            if (isFirstThrow)
+            {
+                isFirstThrow = false;
+                currentFrame++;
+            }
+            else
+            {
+                isFirstThrow = true;
+            }
+
+        }
+        
+        public int CurrentFrame
+        {
+            get { return currentFrame; }
         }
         
         public int ScoreForFrame(int theFrame)
@@ -35,8 +52,14 @@ namespace CleanCodeLearning
                 int firstThrow = throws[ball++];
                 int secondThrow = throws[ball++];
 
-                score += firstThrow + secondThrow;
+                int frameScore = firstThrow + secondThrow;
+
+                if (frameScore == 10)
+                    score += frameScore + throws[ball++];
+                else
+                    score += frameScore;
             }
+
             return score;
         }
     }
