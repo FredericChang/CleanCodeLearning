@@ -11,7 +11,7 @@ namespace CleanCodeLearning
     {
 
         private int score;
-        private int[] throws = new int[23];
+        private int[] throws = new int[21];
         private int currentThrow;
         private int currentFrame = 1;
         private bool isFirstThrow = true;
@@ -57,48 +57,33 @@ namespace CleanCodeLearning
         {
             get { return currentFrame; }
         }
-        
+
         public int ScoreForFrame(int theFrame)
         {
             ball = 0;
             int score = 0;
             for (int currentFrame = 0; currentFrame < theFrame; currentFrame++)
             {
-                firstThrow = throws[ball];
-                if(Strike())
+                if (Strike())
                 {
                     ball++;
                     score += 10 + NextTwoBalls;
                 }
+                else if (Spare())
+                {
+                    ball += 2;
+                    score += 10 + NextBall;
+                }
                 else
                 {
-                    score += HandleSecondThrow();
+                    score += TwoBallsInFrame;
+                    ball += 2;
                 }
-
             }
-
             return score;
         }
-        private int HandleSecondThrow()
-        {
-            int score = 0;
-            secondThrow = throws[ball + 1];
-            int frameScore = firstThrow + secondThrow;
 
-            if (frameScore == 10)
-            {
-                ball += 2;
-                score += frameScore + throws[ball];
-            }
 
-            else
-            { 
-                ball += 2;
-                score += frameScore;
-            }
-                
-            return score;
-        }
 
         private bool Strike()
         {
@@ -109,6 +94,39 @@ namespace CleanCodeLearning
         {
             get { return (throws[ball] + throws[ball + 1]); }
         }
+
+        private int HandleSecondThrow()
+        {
+            int score = 0;
+            if (Spare())
+            {
+                ball += 2;
+                score += 10 + NextBall;
+            }
+
+            else
+            {
+                score += TwoBallsInFrame;
+                ball += 2;
+            }
+                
+            return score;
+        }
+        private int TwoBallsInFrame
+        {
+            get { return throws[ball] + throws[ball + 1]; }
+        }
+
+        private bool Spare()
+        {
+            return throws[ball] + throws[ball + 1] == 10;
+        }
+
+        private int NextBall
+        {
+            get { return throws[ball]; }
+        }
+
     }
 
 }
