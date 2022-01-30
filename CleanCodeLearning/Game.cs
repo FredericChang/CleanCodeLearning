@@ -11,10 +11,14 @@ namespace CleanCodeLearning
     {
 
         private int score;
-        private int[] throws = new int[21];
+        private int[] throws = new int[23];
         private int currentThrow;
         private int currentFrame = 1;
         private bool isFirstThrow = true;
+
+        private int ball;
+        private int firstThrow;
+        private int secondThrow;
 
         public int Score
         {
@@ -25,20 +29,27 @@ namespace CleanCodeLearning
         {
             throws[currentThrow++] = pins;
             score += pins;
-            AdjustCurrentFrame();
+            AdjustCurrentFrame(pins);
 
         }
         
-        private void AdjustCurrentFrame()
+        private void AdjustCurrentFrame(int pins)
         {
             if (isFirstThrow)
             {
-                isFirstThrow = false;
+                if (pins == 10)
+                    currentFrame++;
+                else
+                    isFirstThrow = false;
             }
             else
             {
                 isFirstThrow = true;
                 currentFrame++;
+            }
+            if (currentFrame > 11)
+            {
+                currentFrame = 11;
             }
         }
         
@@ -49,22 +60,54 @@ namespace CleanCodeLearning
         
         public int ScoreForFrame(int theFrame)
         {
-            int ball = 0;
+            ball = 0;
             int score = 0;
             for (int currentFrame = 0; currentFrame < theFrame; currentFrame++)
             {
-                int firstThrow = throws[ball++];
-                int secondThrow = throws[ball++];
-
-                int frameScore = firstThrow + secondThrow;
-
-                if (frameScore == 10)
-                    score += frameScore + throws[ball++];
+                firstThrow = throws[ball];
+                if(Strike())
+                {
+                    ball++;
+                    score += 10 + NextTwoBalls;
+                }
                 else
-                    score += frameScore;
+                {
+                    score += HandleSecondThrow();
+                }
+
             }
 
             return score;
+        }
+        private int HandleSecondThrow()
+        {
+            int score = 0;
+            secondThrow = throws[ball + 1];
+            int frameScore = firstThrow + secondThrow;
+
+            if (frameScore == 10)
+            {
+                ball += 2;
+                score += frameScore + throws[ball];
+            }
+
+            else
+            { 
+                ball += 2;
+                score += frameScore;
+            }
+                
+            return score;
+        }
+
+        private bool Strike()
+        {
+            return throws[ball] == 10;
+        }
+
+        private int NextTwoBalls
+        {
+            get { return (throws[ball] + throws[ball + 1]); }
         }
     }
 
