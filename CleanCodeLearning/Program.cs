@@ -18,26 +18,26 @@ namespace CleanCodeLearning
             //Console.WriteLine(a);
             //Console.WriteLine(b);
 
-            game.Add(1);
-            game.Add(4);
-            game.Add(4);
-            game.Add(5);
-            game.Add(6);
-            game.Add(4);
-            game.Add(5);
-            game.Add(5);
-            game.Add(10);
-            game.Add(0);
-            game.Add(1);
-            game.Add(7);
-            game.Add(3);
-            game.Add(6);
-            game.Add(4);
-            game.Add(10);
-            game.Add(2);
-            game.Add(8);
-            game.Add(6);
-            var a = game.Score;
+            //game.Add(1);
+            //game.Add(4);
+            //game.Add(4);
+            //game.Add(5);
+            //game.Add(6);
+            //game.Add(4);
+            //game.Add(5);
+            //game.Add(5);
+            //game.Add(10);
+            //game.Add(0);
+            //game.Add(1);
+            //game.Add(7);
+            //game.Add(3);
+            //game.Add(6);
+            //game.Add(4);
+            //game.Add(10);
+            //game.Add(2);
+            //game.Add(8);
+            //game.Add(6);
+            //var a = game.Score;
 
         }
     }

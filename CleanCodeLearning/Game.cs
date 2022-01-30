@@ -4,127 +4,74 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanCodeLearning;
 
 namespace CleanCodeLearning
 {
     public class Game
     {
 
-        private int score;
-        private int[] throws = new int[21];
-        private int currentThrow;
         private int currentFrame = 1;
         private bool isFirstThrow = true;
-
-        private int ball;
-        private int firstThrow;
-        private int secondThrow;
+        private Scorer scorer = new Scorer();
 
         public int Score
         {
-            get{ return ScoreForFrame(currentFrame - 1); }
+            get{ return ScoreForFrame(currentFrame); }
 
         }
-        public void Add(int pins)
-        {
-            throws[currentThrow++] = pins;
-            score += pins;
-            AdjustCurrentFrame(pins);
 
-        }
-        
-        private void AdjustCurrentFrame(int pins)
-        {
-            if (isFirstThrow)
-            {
-                if (pins == 10)
-                    currentFrame++;
-                else
-                    isFirstThrow = false;
-            }
-            else
-            {
-                isFirstThrow = true;
-                currentFrame++;
-            }
-            if (currentFrame > 11)
-            {
-                currentFrame = 11;
-            }
-        }
-        
         public int CurrentFrame
         {
             get { return currentFrame; }
         }
 
+        public void Add(int pins)
+        {
+            scorer.AddThrow(pins);
+            AdjustCurrentFrame(pins);
+        }
+
+        private void AdjustCurrentFrame(int pins)
+        {
+
+            if (LastBallInFrame(pins))
+                AdvanceFrame();
+            else
+                isFirstThrow = false;
+ 
+        }
+
+        private bool LastBallInFrame(int pins)
+        {
+            return Strike(pins) || (!isFirstThrow);
+        }
+
+        private bool Strike(int pins)
+        {
+            return (isFirstThrow && pins == 10);
+        }
+
+        private void AdvanceFrame()
+        {
+            currentFrame++;
+            if (currentFrame > 10)
+                currentFrame = 10;
+        }
+
         public int ScoreForFrame(int theFrame)
         {
-            ball = 0;
-            int score = 0;
-            for (int currentFrame = 0; currentFrame < theFrame; currentFrame++)
+            return scorer.ScoreForFrame(theFrame);
+        }
+
+        public bool AdjustFrameForStrike(int pins)
+        {
+            if(pins == 10)
             {
-                if (Strike())
-                {
-                    ball++;
-                    score += 10 + NextTwoBalls;
-                }
-                else if (Spare())
-                {
-                    ball += 2;
-                    score += 10 + NextBall;
-                }
-                else
-                {
-                    score += TwoBallsInFrame;
-                    ball += 2;
-                }
+                AdvanceFrame();
+                return true;
             }
-            return score;
-        }
-
-
-
-        private bool Strike()
-        {
-            return throws[ball] == 10;
-        }
-
-        private int NextTwoBalls
-        {
-            get { return (throws[ball] + throws[ball + 1]); }
-        }
-
-        private int HandleSecondThrow()
-        {
-            int score = 0;
-            if (Spare())
-            {
-                ball += 2;
-                score += 10 + NextBall;
-            }
-
-            else
-            {
-                score += TwoBallsInFrame;
-                ball += 2;
-            }
-                
-            return score;
-        }
-        private int TwoBallsInFrame
-        {
-            get { return throws[ball] + throws[ball + 1]; }
-        }
-
-        private bool Spare()
-        {
-            return throws[ball] + throws[ball + 1] == 10;
-        }
-
-        private int NextBall
-        {
-            get { return throws[ball]; }
+            return false;
         }
 
     }

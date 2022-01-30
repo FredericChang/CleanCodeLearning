@@ -3,31 +3,6 @@ using CleanCodeLearning;
 
 namespace TestProject1
 {
-    //public class Tests
-    //{
-    //    [SetUp]
-    //    public void Setup()
-    //    {
-    //    }
-
-
-    //    [Test]
-    //    public void Test1()
-    //    {
-    //        Assert.Pass();
-    //    }
-    //}
-    [TestFixture]
-    public class FrameTest
-    {
-        [Test]
-        public void TestScoreNoThrows()
-        {
-            Frame f = new Frame();
-            f.Add(5);
-            Assert.AreEqual(5, f.Score);
-        }
-    }
     [TestFixture]
     public class GameTest
     {
@@ -37,21 +12,12 @@ namespace TestProject1
         {
             game = new Game();
         }
-        //[Test]
-        //public void TestOneThrow()
-        //{
-        //    game.Add(5);
-        //    Assert.AreEqual(5, game.Score);
-        //    Assert.AreEqual(1, game.CurrentFrame);
-        //}
         [Test]
         public void TestSecondThrow()
         {
             game.Add(5);
             game.Add(4);
             Assert.AreEqual(9, game.Score);
-            Assert.AreEqual(2, game.CurrentFrame);
-
         }
         [Test]
         public void TestFourThrowsNoMark()
@@ -63,7 +29,6 @@ namespace TestProject1
             Assert.AreEqual(18, game.Score);
             Assert.AreEqual(9, game.ScoreForFrame(1));
             Assert.AreEqual(18, game.ScoreForFrame(2));
-            Assert.AreEqual(3, game.CurrentFrame);
         }
         [Test]
         public void TestSimpleSpare()
@@ -72,19 +37,18 @@ namespace TestProject1
             game.Add(7);
             game.Add(3);
             Assert.AreEqual(13, game.ScoreForFrame(1));
-            Assert.AreEqual(2, game.CurrentFrame);
-
         }
         [Test]
-        public void TestSimpleSpare2()
+        public void TestSimpleFrameAfterSpare()
         {
             game.Add(3);
             game.Add(7);
             game.Add(3);
-            game.Add(5);
-            game.Add(5);
-            Assert.AreEqual(23, game.ScoreForFrame(2));
-            Assert.AreEqual(3, game.CurrentFrame);
+            game.Add(2);
+            Assert.AreEqual(13, game.ScoreForFrame(1));
+            Assert.AreEqual(18, game.ScoreForFrame(2));
+            Assert.AreEqual(18, game.Score);
+
         }
         [Test]
         public void TestSimpleStrike()
@@ -94,7 +58,6 @@ namespace TestProject1
             game.Add(6);
             Assert.AreEqual(19, game.ScoreForFrame(1));
             Assert.AreEqual(28, game.Score);
-            Assert.AreEqual(3, game.CurrentFrame);
 
         }
         [Test]
@@ -105,7 +68,6 @@ namespace TestProject1
                 game.Add(10);
             }
             Assert.AreEqual(300, game.Score);
-            Assert.AreEqual(11, game.CurrentFrame);
         }
         [Test]
         public void TestEndOfArray()
@@ -142,6 +104,7 @@ namespace TestProject1
             game.Add(10);
             game.Add(2);
             game.Add(8);
+            game.Add(6);
 
             Assert.AreEqual(133, game.Score);
 
